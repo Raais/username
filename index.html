@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <title>Username Generator</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        height: 100%;
+      }
+      body {
+        font-family: "Roboto Mono", monospace;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background: linear-gradient(to right, #6a3093 0%, #a044ff 100%);
+      }
+      a {
+        text-decoration: none;
+        color: #fff;
+      }
+      .word-class {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 3em;
+        font-weight: bold;
+        text-shadow: 4px 4px 0px rgba(0, 0, 0, 0.1);
+        color: #fff;
+      }
+      .top-left {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform: translate(5%, 10%);
+        font-size: 1em;
+        color: rgba(255, 255, 255, 0.353);
+      }
+      .bottom-right {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        transform: translate(-5%, -10%);
+        font-size: 1em;
+        color: rgba(255, 255, 255, 0.353);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="top-left">
+      <p>Press [Space]</p>
+    </div>
+    <div class="bottom-right">
+      <span
+        >All combinations are randomly generated browser-side from a
+        <a
+          href="https://github.com/Raais/username/blob/main/words.js"
+          target="_blank"
+          >list</a
+        >
+        of
+      </span>
+      <span id="nouns-count">0</span>
+      <span> nouns and </span>
+      <span id="adjectives-count">0</span>
+      <span> adjectives.</span>
+    </div>
+    <div class="word-class">
+      <h3 id="word"></h3>
+    </div>
+
+    <script type="text/javascript" src="words.js"></script>
+
+    <script>
+      const randomGradient = () => {
+        const randomColor = () => {
+          const letters = "0123456789ABCDEF";
+          let color = "#";
+          for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+          }
+          return color;
+        };
+        const randomGradient = `linear-gradient(to right, ${randomColor()} 0%, ${randomColor()} 100%)`;
+        document.body.style.background = randomGradient;
+      };
+
+      const adjectives = words.adjectives;
+      const nouns = words.nouns;
+      const combined = words.adjectives.concat(words.nouns);
+
+      document.getElementById("nouns-count").innerHTML = nouns.length;
+      document.getElementById("adjectives-count").innerHTML = adjectives.length;
+
+      const randomAdjective = () => {
+        return adjectives[Math.floor(Math.random() * adjectives.length)];
+      };
+
+      const randomNoun = () => {
+        return nouns[Math.floor(Math.random() * nouns.length)];
+      };
+
+      const randomWord = () => {
+        return combined[Math.floor(Math.random() * combined.length)];
+      };
+
+      const randomAdjectiveCombination = () => {
+        let a;
+        if (Math.random() < 0.8) {
+          a = randomAdjective();
+        } else {
+          if (Math.random() < 0.6) {
+            a = randomAdjective() + randomWord();
+          } else {
+            a = randomWord() + randomAdjective();
+          }
+        }
+        return a;
+      };
+
+      const randomNounCombination = () => {
+        let n;
+        if (Math.random() < 0.8) {
+          n = randomNoun();
+        } else {
+          if (Math.random() < 0.6) {
+            n = randomNoun() + randomWord();
+          } else {
+            n = randomWord() + randomNoun();
+          }
+        }
+        return n;
+      };
+
+      const capitalize = (s) => {
+        return s.charAt(0).toUpperCase() + s.slice(1);
+      };
+
+      const leetify = (s) => {
+        return s
+          .replace(/a/gi, "4")
+          .replace(/e/gi, "3")
+          .replace(/i/gi, "1")
+          .replace(/o/gi, "0");
+      };
+
+      const randomStyle = (s) => {
+        if (Math.random() < 0.4) {
+          return capitalize(s);
+        } else {
+          if (Math.random() < 0.07) {
+            return leetify(s);
+          } else {
+            return s.toLowerCase();
+          }
+        }
+      };
+
+      const randomUsername = () => {
+        let a = randomStyle(randomAdjectiveCombination());
+        let b = randomStyle(randomNounCombination());
+
+        let u;
+        if (Math.random() < 0.8) {
+          u = a + b;
+        } else {
+          if (Math.random() < 0.5) {
+            u = a + "_" + b;
+          } else {
+            u = a + "." + b;
+          }
+        }
+
+        return u;
+      };
+
+      document.getElementById("word").innerHTML = randomUsername();
+      randomGradient();
+
+      document.addEventListener("keypress", (e) => {
+        if (e.key === " ") {
+          document.getElementById("word").innerHTML = randomUsername();
+          randomGradient();
+        }
+      });
+    </script>
+  </body>
+</html>

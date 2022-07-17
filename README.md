@@ -1,2 +1,0 @@
-# username
-Username Generator

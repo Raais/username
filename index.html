@@ -126,7 +126,7 @@
 
       const randomAdjectiveCombination = () => {
         let a;
-        if (Math.random() < 0.8) {
+        if (Math.random() < 0.9) {
           a = randomAdjective();
         } else {
           if (Math.random() < 0.6) {
@@ -140,7 +140,7 @@
 
       const randomNounCombination = () => {
         let n;
-        if (Math.random() < 0.8) {
+        if (Math.random() < 0.9) {
           n = randomNoun();
         } else {
           if (Math.random() < 0.6) {
@@ -181,6 +181,11 @@
         let b = randomStyle(randomNounCombination());
 
         let u;
+        if (Math.random() < 0.1) {
+          let temp = a;
+          a = b;
+          b = temp;
+        }
         if (Math.random() < 0.8) {
           u = a + b;
         } else {

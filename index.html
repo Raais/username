@@ -164,12 +164,21 @@
           .replace(/o/gi, "0");
       };
 
+      const exify = (s) => {
+        return s
+          .replace(/[ae]/gi, "x");
+      };
+
       const randomStyle = (s) => {
         if (Math.random() < 0.4) {
           return capitalize(s);
         } else {
           if (Math.random() < 0.07) {
-            return leetify(s);
+            if (Math.random() < 0.5) {
+              return leetify(s);
+            } else {
+              return exify(s);
+            }
           } else {
             return s.toLowerCase();
           }
@@ -199,13 +208,16 @@
         return u;
       };
 
-      document.getElementById("word").innerHTML = randomUsername();
-      randomGradient();
+      const nextWord = () => {
+        document.getElementById("word").innerHTML = randomUsername();
+        randomGradient();
+      };
+
+      nextWord();
 
       document.addEventListener("keypress", (e) => {
         if (e.key === " ") {
-          document.getElementById("word").innerHTML = randomUsername();
-          randomGradient();
+          nextWord();
         }
       });
     </script>
